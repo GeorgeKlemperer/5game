@@ -1,4 +1,4 @@
 # Founders and Coders Application: Game
-##Planning
-##Building
-##Debugging
+## Planning
+## Building
+## Debugging
