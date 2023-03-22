@@ -1,0 +1,40 @@
+@import url("https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300&display=swap");
+
+html {
+  font-size: 16px;
+  font-family: "Newsreader", serif;
+}
+
+canvas {
+    border: 2px solid black;
+    background-color: lightgrey;
+}
+
+body {
+    background: rgb(138,93,43);
+    background: linear-gradient(90deg, rgba(138,93,43,1) 18%, rgba(121,106,9,1) 43%, rgba(0,212,255,1) 100%);
+    text-align: center;
+}
+
+h1 {
+    font: 30px;
+    margin: 30px 0;
+}
+
+/* . will select class, #will select score */
+#score {
+font-size: 80px;
+margin: 10px 0 5px 0;
+}
+
+#resetbutton {
+    font-size: 25px;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 0;
+}
+
+#resetbutton:hover {
+    -webkit-filter: brightness(50%);
