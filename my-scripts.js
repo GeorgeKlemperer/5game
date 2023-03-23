@@ -185,6 +185,7 @@ function updatescore(){
 function resetgame(){ //resets scores to 0, resets paddle positions
      p1score = 0;
      p2score = 0;
+     gameoover.style.display = "none";
     paddle1= {
         width: 25,
         height: 100,
