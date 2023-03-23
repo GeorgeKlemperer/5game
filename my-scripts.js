@@ -51,6 +51,7 @@ function begingame(){
 function nexttick(){
     intervalID = setTimeout(() => { //setTimeout calls a function after a number of milliseconds
         clearboard();
+        drawcourt ();
         drawpaddles();
         moveball();
         drawball(ballX, ballY)
@@ -74,18 +75,18 @@ function drawpaddles(){
     context.strokeRect(paddle2.x,paddle2.y,paddle2.width,paddle2.height);
 };
 function createball(){
-    ballspeed = 1;
-    if(Math.round(Math.random()) == 1){ //This will give us a random number between 0 and 1, if 1 move to the right, if noot move to left.
+    ballspeed = 2; // Change this to edit intial speed.
+    if(Math.round(Math.random()) == 1){ //This will give us a random number between 0 and 1, if 1 move to the right, if not move to left.
         ballXdirection = 1;
     }
     else{
         ballXdirection = -1;
     }
     if(Math.round(Math.random()) == 1){
-        ballYdirection = 1;
+        ballYdirection = 1; // This will make ball always go diagonally
     }
     else{
-        ballYdirection = -1;
+        ballYdirection = -1; // This will make ball always go diagonally
     }
     ballX = gamewidth / 2;
     ballY = gameheight / 2;
@@ -99,12 +100,48 @@ function drawball(ballX, ballY){
     context.fillStyle = ballcolour;
     context.strokeStyle = ballborder;
     context.linewidth = 2;
-    context.beginPath(); //This starts a new path everytick
-    context.arc(ballX, ballY, ballradius, 0, 2 * Math.PI),
-    context.stroke();
-    context.fill(); 
+    context.beginPath(); //This starts a new path everytick, stops line being drawn continuously.
+    context.arc(ballX, ballY, ballradius, 0, 2 * Math.PI), // gives an x coordinate of ballX and a y coordinate of ballY. It then draws an arc from 0 radians to 2pi (a full cirle).
+    context.stroke(); //The code then draws a border around the ball
+    context.fill(); //Then fills it in
 };
-function checkcollision(){};
+function checkcollision(){
+    //Ball boounces off floor and ceiling.
+    if (ballY <= 0 + ballradius) { //ball radius accounts for centre of ball being x an y coordinates
+        ballYdirection *= -1;
+        }
+    if (ballY >= gameheight - ballradius) {
+        ballYdirection *=-1;
+    }
+     //Ball scores on edges.
+    if (ballX <= 0) {
+        p2score += 1;
+        updatescore();
+        createball();
+        return;
+    }
+    if (ballX >= gamewidth) {
+        p1score += 1;
+        updatescore();
+        createball();
+        return;
+    }
+    //Ball bounces off paddles.
+    if (ballX <= (paddle1.x + paddle1.width + ballradius)){ // If ball's X coordinate hits paddle 1 line... (you add paddle width here as coordinate is for upper left corner)
+            if (ballY > paddle1.y && ballY < paddle1.y + paddle1.height) { // and is inbetween paddle 1 y coordinate and height...
+                ballX = (paddle1.x + paddle1.width) + ballradius; //(nb. this code stops ball getting stuck inside paddle)
+                ballXdirection *= -1; //then bounce ball...
+                ballspeed +=1; //and increase ball speed.
+            }
+    }
+    if (ballX >= (paddle2.x - ballradius)){ // If ball's X coordinate hits paddle 2 line...
+        if (ballY > paddle2.y && ballY < paddle2.y + paddle2.height) { // and is inbetween paddle 2 y coordinate and height...
+            ballX = paddle2.x - ballradius; //(nb. this code stops ball getting stuck inside paddle)
+            ballXdirection *= -1; //then bounce ball...
+            ballspeed +=1; //and increase ball speed.
+        }
+}
+    }
 function changedirection(event){
     const keypressed = event.keyCode;
     const paddle1up = 87;
@@ -135,5 +172,92 @@ function changedirection(event){
         break;
     };
 }
-function updatescore(){};
-function resetgame(){};
+function updatescore(){
+    score.textContent = `${p1score} : ${p2score}`; //Be sure to use ` ans not '
+};
+function resetgame(){ //resets scores to 0, resets paddle positions
+     p1score = 0;
+     p2score = 0;
+    paddle1= {
+        width: 25,
+        height: 100,
+        x: 5,
+        y: 5,
+    };
+    paddle2= {
+        width: 25,
+        height: 100,
+        x: gamearea.width - 30,
+        y: gamearea.height - 105,
+    };
+    ballspeed = 0;
+    ballX = 0;
+    ballY = 0;
+    ballXdirection = 0;
+    ballYdirection = 0;
+    updatescore();
+    clearInterval(intervalID);
+    begingame();
+};
+function controlsinfo() {
+    alert("Use the 'W' and 'S' keys to move the left paddle up and down, and use the'J' and 'N' arrow keys to move the right paddle. The ball speed will increase with every paddle collision, have fun!");
+  }
+
+//Draw tenniscourt elements
+function drawcourt () {
+    context.beginPath();
+    context.strokeStyle = '#d9d9d9';
+    context.lineWidth = 2;
+    context.moveTo(gamewidth/2, 0);
+    context.lineTo(gamewidth/2, gameheight);
+    context.stroke();
+
+    context.moveTo(gamewidth/4, gameheight*(.125));
+    context.lineTo(gamewidth/4, gameheight*(.875));
+    context.stroke();
+
+    context.moveTo(gamewidth/(4/3), gameheight*(.125));
+    context.lineTo(gamewidth/(4/3), gameheight*(.875));
+    context.stroke();
+
+    context.moveTo(gamewidth/(4), gameheight/2);
+    context.lineTo(gamewidth/(4/3), gameheight/2);
+    context.stroke();
+
+    context.moveTo(0, gameheight*(.125));
+    context.lineTo(gamewidth, gameheight*(.125));
+    context.stroke();
+
+    context.moveTo(0, gameheight*(.875));
+    context.lineTo(gamewidth, gameheight*(.875));
+    context.stroke();
+
+    context.moveTo(0, gameheight/2);
+    context.lineTo(gamewidth/40, gameheight/2);
+    context.stroke();
+
+    context.moveTo(gamewidth, gameheight/2);
+    context.lineTo(gamewidth/(40/39), gameheight/2);
+    context.stroke();
+  }
+
+// function drawball(ballX, ballY){
+//     context.fillStyle = ballcolour;
+//     context.strokeStyle = ballborder;
+//     context.linewidth = 2;
+//     context.beginPath(); //This starts a new path everytick, stops line being drawn continuously.
+//     context.arc(ballX, ballY, ballradius, 0, 2 * Math.PI), // gives an x coordinate of ballX and a y coordinate of ballY. It then draws an arc from 0 radians to 2pi (a full cirle).
+//     context.stroke(); //The code then draws a border around the ball
+//     context.fill(); //Then fills it in
+// };
+
+// function drawpaddles(){
+//     context.strokeStyle = paddleborder;
+
+//     context.fillStyle = paddle1colour;
+//     context.fillRect(paddle1.x,paddle1.y,paddle1.width,paddle1.height); //The arguments are the x and y coordinates of the upper left corner, then paddle width and height.
+//     context.strokeRect(paddle1.x,paddle1.y,paddle1.width,paddle1.height);
+//     context.fillStyle = paddle2colour;
+//     context.fillRect(paddle2.x,paddle2.y,paddle2.width,paddle2.height);
+//     context.strokeRect(paddle2.x,paddle2.y,paddle2.width,paddle2.height);
+// };

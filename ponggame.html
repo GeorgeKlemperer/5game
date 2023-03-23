@@ -25,13 +25,14 @@
 <body>
 
     <header>
-        <h1>PONG</h1>
+      <button id="controlsinfo" onclick="controlsinfo()">controls</button>
+        <h1 id="pongtitle"><span style="color: orange">P</span>ON<span style="color: cyan">G</span></h1>
     </header>
     <main>
       <div id="pongContainer">
         <canvas id="gamearea" height="410" width="710"></canvas>
         <div id="score">0 : 0</div>
-        <button id="resetbutton">reset</button>
+        <button id="resetbutton" onclick="resetgame()">reset</button>
       </div>
     </main>
 
