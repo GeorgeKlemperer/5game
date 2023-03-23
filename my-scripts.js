@@ -13,6 +13,7 @@ const ballcolour = "black";
 const ballborder = "black";
 const ballradius = 12.5;
 const paddlespeed = 25; 
+const winningscore = 7
 
 // Variables
 let intervalID;
@@ -49,6 +50,12 @@ function begingame(){
     nexttick();
 };
 function nexttick(){
+    if (p1score >= winningscore || p2score >= winningscore) {
+        winningplayerdisplay()
+    }
+    else
+    {
+
     intervalID = setTimeout(() => { //setTimeout calls a function after a number of milliseconds
         clearboard();
         drawcourt ();
@@ -58,7 +65,7 @@ function nexttick(){
         checkcollision();
         nexttick() ;
     }, 10)
-};
+}};
 function clearboard(){
     context.fillStyle = pitchcolour;
     context.fillRect(0,0, gamewidth, gameheight);
@@ -200,7 +207,7 @@ function resetgame(){ //resets scores to 0, resets paddle positions
     begingame();
 };
 function controlsinfo() {
-    alert("Use the 'W' and 'S' keys to move the left paddle up and down, and use the'J' and 'N' arrow keys to move the right paddle. The ball speed will increase with every paddle collision, have fun!");
+    alert("Use the 'W' and 'S' keys to move the left paddle up and down, and use the'J' and 'N' arrow keys to move the right paddle. The ball speed will increase with every paddle collision. First to 7 wins, have fun!");
   }
 
 //Draw tenniscourt elements
@@ -241,28 +248,22 @@ function drawcourt () {
     context.stroke();
   }
 
-// function drawball(ballX, ballY){
-//     context.fillStyle = ballcolour;
-//     context.strokeStyle = ballborder;
-//     context.linewidth = 2;
-//     context.beginPath(); //This starts a new path everytick, stops line being drawn continuously.
-//     context.arc(ballX, ballY, ballradius, 0, 2 * Math.PI), // gives an x coordinate of ballX and a y coordinate of ballY. It then draws an arc from 0 radians to 2pi (a full cirle).
-//     context.stroke(); //The code then draws a border around the ball
-//     context.fill(); //Then fills it in
-// };
-
-// function drawpaddles(){
-//     context.strokeStyle = paddleborder;
-
-//     context.fillStyle = paddle1colour;
-//     context.fillRect(paddle1.x,paddle1.y,paddle1.width,paddle1.height); //The arguments are the x and y coordinates of the upper left corner, then paddle width and height.
-//     context.strokeRect(paddle1.x,paddle1.y,paddle1.width,paddle1.height);
-//     context.fillStyle = paddle2colour;
-//     context.fillRect(paddle2.x,paddle2.y,paddle2.width,paddle2.height);
-//     context.strokeRect(paddle2.x,paddle2.y,paddle2.width,paddle2.height);
-// };
-
-// show when winning player when 21 is reached.
+// show when winning player when winningscore is reached.
 function winningplayerdisplay() {
+    const winnerdisplayelement = document.getElementById('gameovertext');
+
     gameoover.style.display = "block";
+
+    if (p1score >= winningscore) {
+        winnerdisplayelement.innerHTML = `Player 1 Wins!`;
+    }
+    else {
+        winnerdisplayelement.innerHTML = `Player 2 Wins!`;
+    }
 }
+
+// function updateMovieCount() {
+//     const movieCountElement = document.getElementById('movieCount');
+//     const count = Object.keys(movieData).length;
+//     movieCountElement.innerHTML = `The only ${count} movies you need to see (and counting).`;
+//   }
