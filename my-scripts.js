@@ -261,3 +261,8 @@ function drawcourt () {
 //     context.fillRect(paddle2.x,paddle2.y,paddle2.width,paddle2.height);
 //     context.strokeRect(paddle2.x,paddle2.y,paddle2.width,paddle2.height);
 // };
+
+// show when winning player when 21 is reached.
+function winningplayerdisplay() {
+    gameoover.style.display = "block";
+}
