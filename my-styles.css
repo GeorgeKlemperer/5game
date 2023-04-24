@@ -11,10 +11,16 @@ canvas {
 }
 
 body {
-    background: rgb(164,93,1);
+    /* background: rgb(164,93,1); */
     background: linear-gradient(90deg, rgba(164,93,1,1) 0%, rgba(186,138,8,1) 40%, rgba(40,149,145,1) 100%);
     text-align: center;
 }
+
+@media (max-width: 800px) {
+    body {
+        background: lightgray;
+    }
+  }
 
 #controlsinfo {
     text-align: center;
